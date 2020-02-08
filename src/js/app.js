@@ -74,7 +74,7 @@ const purchases = [
 // #3
 
 
-// function mostExpensive() {
+// function mostExpensive(arr) {
 //     return   arr.map(i => i.values.map(j => j.amount))
 //                 .flat()
 //                 .reduce((acc, curr) => acc < curr ? curr : acc);
@@ -86,32 +86,31 @@ const purchases = [
 
 //  #4
 
-// function categoryWithMaxSpent(arr) {
-//     const mapped = arr.map(i => i.values.map(j => ({
-//                     category: j.category, 
-//                     amount: j.amount
-//                 }))).flat();
-//     const obj = {};
-//     for (const item of mapped) {
-//         if (obj.hasOwnProperty(item.category)) {
-//             obj[item.category] += item.amount;
-//         } else {
-//             obj[item.category] = item.amount;
-//         }
-//     }
-//     let max = 0;
-//     let returnCategory;
-//     for (const key in obj) {
-//         if (max < obj[key]) {
-//             max = obj[key];
-//             returnCategory = key;
-//         }    
-//     }
-//     return returnCategory;
-// }
 
-// const result = categoryWithMaxSpent(purchases);
-// console.log(result);
+    const mapped = purchases.map(o => o.values)
+    .flat()
+    .reduce((acc, curr) => {
+        const existent = acc.find(o => o.category === curr.category);
+        if (existent === undefined) {
+            acc.push({
+                category: curr.category,
+                amount: curr.amount,
+            });
+        } else {
+            existent.amount += curr.amount;
+        }
+        return acc;
+    }, [])
+    .reduce((acc, curr) => {
+       if (acc.amount > curr.amount) {
+           return acc;
+       } else {
+           return curr;
+       }
+    });
+
+const result = mapped.category;
+console.log(result);
 
 
 
