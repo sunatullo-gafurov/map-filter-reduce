@@ -29,23 +29,20 @@ const purchases = [
 
 // #1
 
-// function findDateWithMaxNumberOfPurchase(arr) {
-//     const mapped = arr.map(i => ({
-//         date: i.date,
-//         numOfPurchase: i.values.length
-//     }));
-//     let max = 0;
-//     let returnDate; 
-//     for (const elem of mapped) {
-//         if (max < elem.numOfPurchase) {
-//             max = elem.numOfPurchase;
-//             returnDate = elem.date;
-//         }
-//     }
-//     return returnDate;
-// }
 
-// const result = findDateWithMaxNumberOfPurchase(purchases);
+// const mapped = purchases.map(i => ({
+//     date: i.date,
+//     numOfPurchase: i.values.length
+// }))
+// .reduce((acc, curr) => {
+//     if (acc.numOfPurchase > curr.numOfPurchase) {
+//         return acc;
+//     } else {
+//         return curr;
+//     }
+// });
+
+// const result = mapped.date;
 // console.log(result);
 
 
@@ -53,20 +50,22 @@ const purchases = [
 
 //  #2
 
-// function findDateWithMaxPurchase(arr) {
-//     let max = 0;
-//     let returnDate;
-//     for (const elem of arr) {
-//         let sumOfPurchases = elem.values.reduce((acc,curr) => acc + curr.amount, 0);
-//         if (max < sumOfPurchases) {
-//             max = sumOfPurchases;
-//             returnDate = elem.date;
-//         }  
+// const mapped = purchases.map(i => {
+//     return {
+//         date: i.date,
+//         sumOfPurchases: i.values.reduce((acc, curr) => {
+//             return acc + curr.amount;
+//         }, 0)
 //     }
-//     return returnDate;
-// }
-
-// const result = findDateWithMaxPurchase(purchases);
+// })
+// .reduce((acc, curr) => {
+//     if (acc.sumOfPurchases > curr.sumOfPurchases) {
+//         return acc;
+//     } else {
+//         return curr;
+//     }
+// });
+// const result = mapped.date;
 // console.log(result);
 
 
@@ -74,12 +73,9 @@ const purchases = [
 // #3
 
 
-// function mostExpensive(arr) {
-//     return   arr.map(i => i.values.map(j => j.amount))
+// const result = purchases.map(i => i.values.map(j => j.amount))
 //                 .flat()
-//                 .reduce((acc, curr) => acc < curr ? curr : acc);
-// }
-// const result = mostExpensive(purchases);
+//                 .reduce((acc, curr) => acc < curr ? curr : acc); 
 // console.log(result);
 
 
@@ -87,42 +83,39 @@ const purchases = [
 //  #4
 
 
-    const mapped = purchases.map(o => o.values)
-    .flat()
-    .reduce((acc, curr) => {
-        const existent = acc.find(o => o.category === curr.category);
-        if (existent === undefined) {
-            acc.push({
-                category: curr.category,
-                amount: curr.amount,
-            });
-        } else {
-            existent.amount += curr.amount;
-        }
-        return acc;
-    }, [])
-    .reduce((acc, curr) => {
-       if (acc.amount > curr.amount) {
-           return acc;
-       } else {
-           return curr;
-       }
-    });
+// const mapped = purchases.map(o => o.values)
+// .flat()
+// .reduce((acc, curr) => {
+//     const existent = acc.find(o => o.category === curr.category);
+//     if (existent === undefined) {
+//         acc.push({
+//             category: curr.category,
+//             amount: curr.amount,
+//         });
+//     } else {
+//         existent.amount += curr.amount;
+//     }
+//     return acc;
+// }, [])
+// .reduce((acc, curr) => {
+//     if (acc.amount > curr.amount) {
+//         return acc;
+//     } else {
+//         return curr;
+//     }
+// });
 
-const result = mapped.category;
-console.log(result);
+// const result = mapped.category;
+// console.log(result);
 
 
 
 
 //   #5
 
-// function averageSpent(arr) {
-//     const amounts = arr.map(i => i.values.map(j => j.amount)).flat();
-//     return amounts.reduce((acc, curr) => acc + curr) / amounts.length;
-// }
 
-// const result = averageSpent(purchases);
+// const amounts = purchases.map(i => i.values.map(j => j.amount));
+// const result = amounts.flat().reduce((acc, curr) => acc + curr) / amounts.length;
 // console.log(result);
 
 
@@ -130,47 +123,37 @@ console.log(result);
 
 //   #6
 
-// function statisticsDate(arr) {
-//     const stats = arr.map(i => ({
-//         date: i.date,
-//         amount: i.values.reduce((acc, curr) => acc + curr.amount, 0)
-//     }));
-//     return stats;
-// }
-
-// const result = statisticsDate(purchases);
-// console.log(result);
+// const stats = purchases.map(i => ({
+//     date: i.date,
+//     amount: i.values.reduce((acc, curr) => acc + curr.amount, 0)
+// }));
+    
+// console.log(stats);
 
 
 
 
 //  #7
 
-// function statisticsCategory(arr) {
-//     const mapped = arr.map(i => i.values.map(j => ({
-//         category: j.category, 
-//         amount: j.amount
-//     }))).flat();
-
-//     const obj = {};
-//     for (const item of mapped) {
-//         if (obj.hasOwnProperty(item.category)) {
-//             obj[item.category] += item.amount;
-//         } else {
-//             obj[item.category] = item.amount;
-//         }
+// const stats = purchases.map(i => i.values.map(j => ({
+//     category: j.category, 
+//     amount: j.amount
+// })))
+// .flat()
+// .reduce((acc, curr) => {
+//     const existent = acc.find(o => o.category === curr.category);
+//     if (existent === undefined) {
+//         acc.push({
+//             category: curr.category,
+//             amount: curr.amount,
+//         });
+//     } else {
+//         existent.amount += curr.amount;
 //     }
+//     return acc;
+// }, []);
 
-//     const stats = [];
-//     for (const key in obj) {
-//         stats.push({category: key, amount: obj[key]});   
-//         }
-//     return stats;
-// }
-
-
-// const result = statisticsCategory(purchases);
-// console.log(result);
+// console.log(stats);
 
 
 
